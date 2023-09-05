@@ -18,6 +18,11 @@ namespace rpg_api.Services.CharacterService
             _context = context;
         }
 
+        /// <summary>
+        /// Add a new character
+        /// </summary>
+        /// <param name="character">AddCharacterDto</param>
+        /// <returns>List of Characters</returns>
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto character)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -28,6 +33,10 @@ namespace rpg_api.Services.CharacterService
             return serviceResponse;
         }
 
+        /// <summary>
+        /// Get all characters
+        /// </summary>
+        /// <returns></returns>
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -36,6 +45,11 @@ namespace rpg_api.Services.CharacterService
             return serviceResponse;
         }
 
+        /// <summary>
+        /// Gets a single character by id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns></returns>
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
@@ -44,6 +58,11 @@ namespace rpg_api.Services.CharacterService
             return serviceResponse;
         }
 
+        /// <summary>
+        /// Updates a character
+        /// </summary>
+        /// <param name="updatedCharacterDto">UpdateCharacterDto</param>
+        /// <returns></returns>
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacterDto)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
@@ -66,6 +85,11 @@ namespace rpg_api.Services.CharacterService
             return serviceResponse;
         }
 
+        /// <summary>
+        /// Removes a character
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns></returns>
         public async Task<ServiceResponse<List<GetCharacterDto>>> RemoveCharacter(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -78,7 +102,7 @@ namespace rpg_api.Services.CharacterService
 
                 _context.Characters.Remove(character);
                 await _context.SaveChangesAsync();
-                serviceResponse.Data =_mapper.Map<List<GetCharacterDto>>(await _context.Characters.ToListAsync());
+                serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(await _context.Characters.ToListAsync());
             }
             catch (Exception ex)
             {
