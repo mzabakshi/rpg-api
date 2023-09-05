@@ -3,43 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using rpg_api.Data;
 
 namespace rpg_api.Services.CharacterService
 {
     public class CharacterService : ICharacterService
     {
         private readonly IMapper _mapper;
-        public static List<Character> characters = new List<Character>(){
-            new Character(),
-            new Character(){Id = 1, Name="Sam"}
-        };
+        private readonly DataContext _context;
 
-        public CharacterService(IMapper mapper)
+        public CharacterService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto character)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             var mappedCharacter = _mapper.Map<Character>(character);
-            mappedCharacter.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(mappedCharacter);
-            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            _context.Characters.Add(mappedCharacter);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = await _context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToListAsync();
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+            var characterList = await _context.Characters.ToListAsync();
+            serviceResponse.Data = characterList.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(x => x.Id == id));
+            var character = await _context.Characters.FirstOrDefaultAsync(x => x.Id == id);
+            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             return serviceResponse;
         }
 
@@ -48,12 +49,13 @@ namespace rpg_api.Services.CharacterService
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
             try
             {
-                var character = characters.FirstOrDefault(c => c.Id == updatedCharacterDto.Id);
+                var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == updatedCharacterDto.Id);
 
                 if (character == null)
                     throw new Exception($"Character with Id '{updatedCharacterDto.Id}' not found.");
 
                 _mapper.Map(updatedCharacterDto, character);
+                await _context.SaveChangesAsync();
                 serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             }
             catch (Exception ex)
@@ -69,13 +71,14 @@ namespace rpg_api.Services.CharacterService
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             try
             {
-                var character = characters.FirstOrDefault(c => c.Id == id);
+                var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
 
                 if (character == null)
                     throw new Exception($"Character with Id '{id}' not found.");
 
-                characters.Remove(character);
-                serviceResponse.Data =_mapper.Map<List<GetCharacterDto>>(characters);
+                _context.Characters.Remove(character);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data =_mapper.Map<List<GetCharacterDto>>(await _context.Characters.ToListAsync());
             }
             catch (Exception ex)
             {
