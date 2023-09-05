@@ -2,6 +2,7 @@ global using rpg_api.Models;
 global using rpg_api.Services.CharacterService;
 global using rpg_api.Dtos.Character;
 global using AutoMapper;
+global using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
