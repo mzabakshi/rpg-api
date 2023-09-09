@@ -5,7 +5,7 @@
 namespace rpg_api.Migrations
 {
     /// <inheritdoc />
-    public partial class userpasswordhash : Migration
+    public partial class Userpasswordhash : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

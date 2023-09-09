@@ -13,7 +13,7 @@ namespace rpg_api.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20230909040417_userpasswordhash")]
-    partial class userpasswordhash
+    partial class Userpasswordhash
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
