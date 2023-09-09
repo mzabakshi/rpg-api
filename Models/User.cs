@@ -11,6 +11,7 @@ namespace rpg_api.Models
         public string Username { get; set; } = string.Empty;
         public byte[] Password { get; set; } = new byte[0];
         public byte[] PasswordSalt { get; set; } = new byte[0];
+        public byte[] PasswordHash { get; set; } = new byte[0];
         public List<Character>? Characters { get; set; }
     }
 }
