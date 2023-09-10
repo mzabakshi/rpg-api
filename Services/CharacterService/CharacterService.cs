@@ -37,10 +37,10 @@ namespace rpg_api.Services.CharacterService
         /// Get all characters
         /// </summary>
         /// <returns></returns>
-        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters(int userId)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            var characterList = await _context.Characters.ToListAsync();
+            var characterList = await _context.Characters.Where(c => c.User!.Id == userId).ToListAsync();
             serviceResponse.Data = characterList.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             return serviceResponse;
         }
