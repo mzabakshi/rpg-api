@@ -11,7 +11,7 @@ namespace rpg_api.Services.CharacterService
         /// Get all characters
         /// </summary>
         /// <returns></returns>
-        Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters(int userId);
+        Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
         
         /// <summary>
         /// Gets a single character by id
