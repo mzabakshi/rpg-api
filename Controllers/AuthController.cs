@@ -29,5 +29,13 @@ namespace rpg_api.Controllers
 
             return response.Success ? Ok(response) : BadRequest(response);
         }
+        
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginDto request)
+        {
+            var response = await _authRepository.Login(request.Username, request.Password);
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
     }
 }
