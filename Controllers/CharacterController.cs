@@ -52,5 +52,11 @@ namespace rpg_api.Controllers
             var response = await _characterService.RemoveCharacter(id);
             return response.Data == null ? NotFound(response) : Ok(response);
         }
+
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> AddCharacterSkill(AddCharacterSkillDto newCharacterSkill)
+        {
+            return Ok(await _characterService.AddCharacterSkill(newCharacterSkill));
+        }
     }
 }

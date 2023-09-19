@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using rpg_api.Dtos.Skill;
 using rpg_api.Dtos.Weapon;
 
 namespace rpg_api
@@ -15,6 +16,7 @@ namespace rpg_api
             CreateMap<UpdateCharacterDto, Character>();
             CreateMap<AddWeaponDto, Weapon>();
             CreateMap<Weapon, GetWeaponDto>();
+            CreateMap<Skill, GetSkillDto>();
         }
     }
 }

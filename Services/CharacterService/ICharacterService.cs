@@ -12,14 +12,14 @@ namespace rpg_api.Services.CharacterService
         /// </summary>
         /// <returns></returns>
         Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
-        
+
         /// <summary>
         /// Gets a single character by id
         /// </summary>
         /// <param name="id">int</param>
         /// <returns></returns>
         Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
-        
+
         /// <summary>
         /// Add a new character
         /// </summary>
@@ -39,5 +39,12 @@ namespace rpg_api.Services.CharacterService
         /// <param name="id">int</param>
         /// <returns></returns>
         Task<ServiceResponse<List<GetCharacterDto>>> RemoveCharacter(int id);
+
+        /// <summary>
+        /// Add new character skill
+        /// </summary>
+        /// <param name="newCharacterSkill"></param>
+        /// <returns></returns>
+        Task<ServiceResponse<GetCharacterDto>> AddCharacterSkill(AddCharacterSkillDto newCharacterSkill);
     }
 }
