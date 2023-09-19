@@ -14,5 +14,6 @@ namespace rpg_api.Data
 
         public DbSet<Character> Characters => Set<Character>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Weapon> Weapons => Set<Weapon>();
     }
 }
