@@ -17,9 +17,11 @@ namespace rpg_api.Controllers
         public FightController(IFightService fightService)
         {
             _fightService = fightService;
-        }       
+        }
 
-        public async Task<ActionResult<ServiceResponse<AttackResultDto>>> WeaponAttack(WeaponAttackDto request){
+        [HttpPost("Weapon")]
+        public async Task<ActionResult<ServiceResponse<AttackResultDto>>> WeaponAttack(WeaponAttackDto request)
+        {
             return Ok(await _fightService.WeaponAttack(request));
         }
     }
