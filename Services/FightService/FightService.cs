@@ -10,9 +10,11 @@ namespace rpg_api.Services.FightService
     public class FightService : IFightService
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public FightService(DataContext context)
+        public FightService(DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -63,7 +65,7 @@ namespace rpg_api.Services.FightService
 
                         response.Data.Log.Add($"{attacker.Name} attacker {opponent.Name} using {attackUsed} with {(damage >= 0 ? damage : 0)} damage");
 
-                        if(opponent.HitPoint <= 0)
+                        if (opponent.HitPoint <= 0)
                         {
                             defeated = true;
                             attacker.Victories++;
@@ -75,7 +77,8 @@ namespace rpg_api.Services.FightService
                     }
                 }
 
-                characters.ForEach(c => {
+                characters.ForEach(c =>
+                {
                     c.Fights++;
                     c.HitPoint = 100;
                 });
@@ -197,6 +200,21 @@ namespace rpg_api.Services.FightService
             if (damage > 0)
                 opponent.HitPoint -= damage;
             return damage;
+        }
+
+        public async Task<ServiceResponse<List<HighscoreDto>>> GetHighscore()
+        {
+            var characters = await _context.Characters.Where(c => c.Fights > 0)
+            .OrderByDescending(c => c.Victories)
+            .ThenBy(c => c.Defeats)
+            .ToListAsync();
+
+            var response = new ServiceResponse<List<HighscoreDto>>
+            {
+                Data = characters.Select(c => _mapper.Map<HighscoreDto>(c)).ToList()
+            };
+
+            return response;
         }
     }
 }
